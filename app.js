@@ -47,3 +47,15 @@ deleteBtn.addEventListener('click', () => {
 
     screen.innerText = newStr;
 });
+
+// check if evaluation is valid
+const isValidEval = evalStr => {
+    let operations = ['+', '-', '*', '/'];
+    let okStart = ['+', '-'];// evalStr can start with these chars
+
+    for (let i = 0; i < operations.length; i++) {
+        if ((evalStr.startsWith(operations[i]) && !okStart.includes(operations[i])) || 
+            evalStr.endsWith(operations[i])) return false;
+    }
+    return true;
+}
