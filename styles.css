@@ -22,5 +22,15 @@ body {
 }
 
 button {
+    border: 0px;
+    outline: 3px solid black;
+    margin: 0;
+    padding: 0;
     flex-grow: 1;
+    flex-basis: 0;
+    font-size: 20px;
+}
+
+#zero-btn {
+    flex-grow: 2;
 }
