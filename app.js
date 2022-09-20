@@ -12,3 +12,11 @@ const operate = (operator, a, b) => {
         console.error('Invalid operator');
     }
 }
+
+// add clicked buttons to screen
+const screen = document.querySelector('.screen');
+
+const screenBtns = document.querySelectorAll('.concat-screen');
+screenBtns.forEach(btn => {
+    btn.addEventListener('click', () => screen.innerText += btn.textContent)
+});
