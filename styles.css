@@ -8,7 +8,8 @@ body {
 }
 
 .container {
-    border: 8px solid black;
+    border: 0px;
+    outline: 8px solid black;
     border-radius: 10px;
     height: 50vh;
     width: 50vw;
@@ -51,4 +52,13 @@ button {
 
 #zero-btn {
     flex-grow: 2;
+}
+
+.screen {
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 90px;
+    padding-right: 10px;
+    background-color: rgb(17, 17, 17) ;
+    color: aliceblue;
 }
