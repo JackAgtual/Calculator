@@ -15,8 +15,14 @@ const operate = (operator, a, b) => {
 
 // add clicked buttons to screen
 const screen = document.querySelector('.screen');
-
+let started = false;
 const screenBtns = document.querySelectorAll('.concat-screen');
 screenBtns.forEach(btn => {
-    btn.addEventListener('click', () => screen.innerText += btn.textContent)
+    btn.addEventListener('click', () => {
+        if (started) screen.innerText += btn.textContent;
+        else {
+            screen.innerText = btn.textContent;
+            started = true;
+        }
+})
 });
