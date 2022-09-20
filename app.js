@@ -33,3 +33,17 @@ clearBtn.addEventListener('click', () => {
     started = false;
     screen.innerText = '0';
 });
+
+// delete button
+const deleteBtn = document.querySelector('#delete-btn');
+deleteBtn.addEventListener('click', () => {
+    if (!started) return;
+
+    let newStr;
+    if (screen.innerText.length === 1){ 
+        newStr = '0';
+        started = false;
+    } else newStr = screen.innerText.substring(0, screen.innerText.length - 1);
+
+    screen.innerText = newStr;
+});
