@@ -26,3 +26,10 @@ screenBtns.forEach(btn => {
         }
 })
 });
+
+// clear button
+const clearBtn = document.querySelector('#clear-btn');
+clearBtn.addEventListener('click', () => {
+    started = false;
+    screen.innerText = '0';
+});
