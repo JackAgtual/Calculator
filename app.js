@@ -66,3 +66,17 @@ const isValidEval = evalStr => {
     }
     return true;
 }
+
+
+// equal btn 
+const evalExpression = evalStr => {
+    console.log(evalStr);
+}
+
+const equalBtn = document.querySelector('#equals');
+equalBtn.addEventListener('click', () => {
+    const evalStr = screen.innerText;
+    if (!isValidEval(evalStr)) return;
+
+    evalExpression(evalStr);
+});
