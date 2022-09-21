@@ -70,7 +70,12 @@ const isValidEval = evalStr => {
 
 // equal btn 
 const evalExpression = evalStr => {
-    console.log(evalStr);
+    const operations = ['+', '-', '*', '/'];
+    const opIdx = [];
+    for (let i = 0; i < evalStr.length; i++) {
+        if (operations.includes(evalStr.charAt(i))) opIdx.push(i);
+    }
+    console.log(opIdx);
 }
 
 const equalBtn = document.querySelector('#equals');
