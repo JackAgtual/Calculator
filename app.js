@@ -50,12 +50,19 @@ deleteBtn.addEventListener('click', () => {
 
 // check if evaluation is valid
 const isValidEval = evalStr => {
-    let operations = ['+', '-', '*', '/'];
-    let okStart = ['+', '-'];// evalStr can start with these chars
+    let invalidEnds = ['+', '-', '*', '/', '.'];
+    let okStart = ['+', '-', '.'];// evalStr can start with these chars
 
-    for (let i = 0; i < operations.length; i++) {
-        if ((evalStr.startsWith(operations[i]) && !okStart.includes(operations[i])) || 
-            evalStr.endsWith(operations[i])) return false;
+    // starts or ends with invalid char
+    for (let i = 0; i < invalidEnds.length; i++) {
+        if ((evalStr.startsWith(invalidEnds[i]) && !okStart.includes(invalidEnds[i])) || 
+            evalStr.endsWith(invalidEnds[i])) return false;
+    }
+
+    // two invalid chars next to each other
+    for (let i = 1; i < evalStr.length; i++) {
+        if (invalidEnds.includes(evalStr.charAt(i)) && 
+            invalidEnds.includes(evalStr.charAt(i-1))) return false;
     }
     return true;
 }
