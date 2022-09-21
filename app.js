@@ -50,7 +50,8 @@ deleteBtn.addEventListener('click', () => {
 
 // check if evaluation is valid
 const isValidEval = evalStr => {
-    let invalidEnds = ['+', '-', '*', '/', '.'];
+    let operations = ['+', '-', '*', '/']
+    let invalidEnds = [...operations, '.'];
     let okStart = ['+', '-', '.'];// evalStr can start with these chars
 
     // starts or ends with invalid char
@@ -64,6 +65,18 @@ const isValidEval = evalStr => {
         if (invalidEnds.includes(evalStr.charAt(i)) && 
             invalidEnds.includes(evalStr.charAt(i-1))) return false;
     }
+
+    // contains an operation (can't be first +/-)
+    let hasOp = false;
+    const startIdx = okStart.includes(evalStr.charAt(0)) ? 1 : 0;
+    for (let i = startIdx; i < evalStr.length; i++) {
+        if (operations.includes(evalStr.charAt(i))) {
+            hasOp = true;
+            break;
+        }
+    }
+    if (!hasOp) return false;
+    
     return true;
 }
 
@@ -77,7 +90,7 @@ const evalExpression = evalStr => {
     for (let i = 0; i < evalStr.length; i++) {
         if (operations.includes(evalStr.charAt(i))) opIdx.push(i);
     }
-
+    // TODO: What if first number starts with + or - 
     // evaluate expression
     let curEval;
     for (let i = 1; i < opIdx.length; i++) {
@@ -89,16 +102,16 @@ const evalExpression = evalStr => {
         switch (op) {
             case '+':
                 curEval = add(num1, num2);
-                break
+                break;
             case '-':
                 curEval = subtract(num1, num2);
-                break
+                break;
             case '*':
                 curEval = multiply(num1, num2);
-                break
+                break;
             case '/':
                 curEval = divide(num1, num2);
-                break
+                break;
             default:
                 alert('Invalid operation')
         }
