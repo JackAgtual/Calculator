@@ -90,7 +90,7 @@ const evalExpression = evalStr => {
     for (let i = 0; i < evalStr.length; i++) {
         if (operations.includes(evalStr.charAt(i))) opIdx.push(i);
     }
-    // TODO: What if first number starts with + or - 
+    
     // evaluate expression
     let curEval;
     for (let i = 1; i < opIdx.length; i++) {
