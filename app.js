@@ -102,7 +102,6 @@ const evalExpression = evalStr => {
             default:
                 alert('Invalid operation')
         }
-        console.log(curEval)
     }
 
     return curEval;
@@ -113,5 +112,5 @@ equalBtn.addEventListener('click', () => {
     const evalStr = screen.innerText;
     if (!isValidEval(evalStr)) return;
 
-    evalExpression(evalStr);
+    screen.innerText = (Math.round(evalExpression(evalStr) * 100) / 100).toString()
 });
