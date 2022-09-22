@@ -127,3 +127,10 @@ equalBtn.addEventListener('click', () => {
 
     screen.innerText = (Math.round(evalExpression(evalStr) * 100) / 100).toString()
 });
+
+// percentage button
+const pcntBtn = document.querySelector('#percent');
+pcntBtn.addEventListener('click', () => {
+    const num = Number(screen.innerText);
+    screen.innerText = `${num / 100}`;
+})
