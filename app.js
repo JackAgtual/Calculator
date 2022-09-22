@@ -2,6 +2,7 @@ const add      = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide   = (a, b) => a / b;
+let operationClicked = false;
 
 const operate = (operator, a, b) => {
     if      (operator === '+') return add(a, b);
@@ -127,3 +128,18 @@ equalBtn.addEventListener('click', () => {
 
     screen.innerText = (Math.round(evalExpression(evalStr) * 100) / 100).toString()
 });
+
+// evaluate expression when operation btn is clicked 
+const opBtns = document.querySelectorAll('.operation');
+opBtns.forEach(opBtn => {
+    opBtn.addEventListener('click', () => {
+        // evaluate the expression if there's and expression on the screen
+        console.log(`op clicked: ${operationClicked}`)
+        if (operationClicked) screen.innerText = evalExpression(screen.innerText) + opBtn.innerText;
+        else                  operationClicked = true;
+
+        // clear operationClicked if:
+        // - AC is clicked
+        // - operaiton is deleted (backspace)
+    });
+})
