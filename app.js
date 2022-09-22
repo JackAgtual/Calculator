@@ -128,6 +128,8 @@ equalBtn.addEventListener('click', () => {
     if (!isValidEval(evalStr)) return;
 
     screen.innerText = (Math.round(evalExpression(evalStr) * 100) / 100).toString()
+
+    operationClicked = false;
 });
 
 // evaluate expression when operation btn is clicked 
