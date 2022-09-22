@@ -33,6 +33,7 @@ const clearBtn = document.querySelector('#clear-btn');
 clearBtn.addEventListener('click', () => {
     started = false;
     screen.innerText = '0';
+    operationClicked = false;
 });
 
 // delete button
@@ -141,5 +142,6 @@ opBtns.forEach(opBtn => {
         // clear operationClicked if:
         // - AC is clicked
         // - operaiton is deleted (backspace)
+        // - equal btn is clicked
     });
 })
