@@ -2,6 +2,8 @@ const add      = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide   = (a, b) => a / b;
+let operationClicked = false;
+const operations = ['+', '-', '*', '/'];
 
 const operate = (operator, a, b) => {
     if      (operator === '+') return add(a, b);
@@ -32,12 +34,16 @@ const clearBtn = document.querySelector('#clear-btn');
 clearBtn.addEventListener('click', () => {
     started = false;
     screen.innerText = '0';
+    operationClicked = false;
 });
 
 // delete button
 const deleteBtn = document.querySelector('#delete-btn');
 deleteBtn.addEventListener('click', () => {
     if (!started) return;
+
+    // check if deleting an operation
+    if (operations.includes(screen.innerText.charAt(screen.innerText.length - 1))) operationClicked = false;
 
     let newStr;
     if (screen.innerText.length === 1){ 
@@ -83,7 +89,6 @@ const isValidEval = evalStr => {
 
 // equal btn 
 const evalExpression = evalStr => {
-    const operations = ['+', '-', '*', '/'];
     const opIdx = [-1];
 
     // get indecies of operations
@@ -126,4 +131,17 @@ equalBtn.addEventListener('click', () => {
     if (!isValidEval(evalStr)) return;
 
     screen.innerText = (Math.round(evalExpression(evalStr) * 100) / 100).toString()
+
+    operationClicked = false;
 });
+
+// evaluate expression when operation btn is clicked 
+const opBtns = document.querySelectorAll('.operation');
+opBtns.forEach(opBtn => {
+    opBtn.addEventListener('click', () => {
+        // evaluate the expression if there's and expression on the screen
+        console.log(`op clicked: ${operationClicked}`)
+        if (operationClicked) screen.innerText = evalExpression(screen.innerText) + opBtn.innerText;
+        else                  operationClicked = true;
+    });
+})
