@@ -3,6 +3,7 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide   = (a, b) => a / b;
 let operationClicked = false;
+let operationState;
 const operations = ['+', '-', '*', '/'];
 
 const operate = (operator, a, b) => {
@@ -139,8 +140,11 @@ equalBtn.addEventListener('click', () => {
 const opBtns = document.querySelectorAll('.operation');
 opBtns.forEach(opBtn => {
     opBtn.addEventListener('click', () => {
+
+        // update operationState
+        operationState = opBtn.innerText;
+        
         // evaluate the expression if there's and expression on the screen
-        console.log(`op clicked: ${operationClicked}`)
         if (operationClicked) screen.innerText = evalExpression(screen.innerText) + opBtn.innerText;
         else                  operationClicked = true;
     });
