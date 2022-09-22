@@ -3,6 +3,7 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide   = (a, b) => a / b;
 let operationClicked = false;
+const operations = ['+', '-', '*', '/'];
 
 const operate = (operator, a, b) => {
     if      (operator === '+') return add(a, b);
@@ -40,6 +41,9 @@ clearBtn.addEventListener('click', () => {
 const deleteBtn = document.querySelector('#delete-btn');
 deleteBtn.addEventListener('click', () => {
     if (!started) return;
+
+    // check if deleting an operation
+    if (operations.includes(screen.innerText.charAt(screen.innerText.length - 1))) operationClicked = false;
 
     let newStr;
     if (screen.innerText.length === 1){ 
@@ -85,7 +89,6 @@ const isValidEval = evalStr => {
 
 // equal btn 
 const evalExpression = evalStr => {
-    const operations = ['+', '-', '*', '/'];
     const opIdx = [-1];
 
     // get indecies of operations
@@ -140,10 +143,5 @@ opBtns.forEach(opBtn => {
         console.log(`op clicked: ${operationClicked}`)
         if (operationClicked) screen.innerText = evalExpression(screen.innerText) + opBtn.innerText;
         else                  operationClicked = true;
-
-        // clear operationClicked if:
-        // - AC is clicked
-        // - operaiton is deleted (backspace)
-        // - equal btn is clicked
     });
 })
