@@ -94,12 +94,7 @@ const evalExpression = (evalStr, operationState) => {
     // might need to pass operationClicked
     
     // operation state is defined (not first time clicking operation)
-    console.log(`In eval: op state = ${operationState}`)
-    if (operationState) {
-        const ans = operate(operationState, prevNum, Number(screen.innerText));
-        console.log(`The answer is ${ans}`)
-        return ans;
-    }
+    if (operationState) return operate(operationState, prevNum, Number(screen.innerText));
 
     // get index of operation
     let opIdx;
@@ -139,9 +134,7 @@ opBtns.forEach(opBtn => {
 
             // update operationState
             operationState = opBtn.innerText;
-            console.log(`Btn clicked: Op state = ${operationState}, innerText = ${opBtn.innerText}`)
             prevNum = Number(evalExpression(screen.innerText));
-            console.log(`state = ${operationState}, prevNum = ${prevNum}`);
         }
         else {
             operationClicked = true;
