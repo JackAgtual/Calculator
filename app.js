@@ -4,6 +4,7 @@ const multiply = (a, b) => a * b;
 const divide   = (a, b) => a / b;
 let operationClicked = false;
 let operationState;
+let prevNum;
 const operations = ['+', '-', '*', '/'];
 
 const operate = (operator, a, b) => {
@@ -89,41 +90,32 @@ const isValidEval = evalStr => {
 
 
 // equal btn 
-const evalExpression = evalStr => {
-    const opIdx = [-1];
+const evalExpression = (evalStr, operationState) => {
+    // might need to pass operationClicked
+    
+    // operation state is defined (not first time clicking operation)
+    console.log(`In eval: op state = ${operationState}`)
+    if (operationState) {
+        const ans = operate(operationState, prevNum, Number(screen.innerText));
+        console.log(`The answer is ${ans}`)
+        return ans;
+    }
 
-    // get indecies of operations
+    // get index of operation
+    let opIdx;
     for (let i = 0; i < evalStr.length; i++) {
-        if (operations.includes(evalStr.charAt(i))) opIdx.push(i);
+        if (operations.includes(evalStr.charAt(i))){
+            opIdx = i;
+            break;
+        }
     }
     
     // evaluate expression
-    let curEval;
-    for (let i = 1; i < opIdx.length; i++) {
-        let num1 = curEval || Number(evalStr.substring(opIdx[i-1] + 1, opIdx[i]));
-        let op = evalStr.charAt(opIdx[i]);
-        let num2 = Number(evalStr.substring(opIdx[i] + 1, opIdx[i + 1]));
-        
-        // set curEval
-        switch (op) {
-            case '+':
-                curEval = add(num1, num2);
-                break;
-            case '-':
-                curEval = subtract(num1, num2);
-                break;
-            case '*':
-                curEval = multiply(num1, num2);
-                break;
-            case '/':
-                curEval = divide(num1, num2);
-                break;
-            default:
-                alert('Invalid operation')
-        }
-    }
-
-    return curEval;
+    let op = evalStr.charAt(opIdx);
+    let num1 =Number(evalStr.substring(0, opIdx));
+    let num2 = Number(evalStr.substring(opIdx + 1));
+    
+    return operate(op, num1, num2);
 }
 
 const equalBtn = document.querySelector('#equals');
@@ -141,11 +133,19 @@ const opBtns = document.querySelectorAll('.operation');
 opBtns.forEach(opBtn => {
     opBtn.addEventListener('click', () => {
 
-        // update operationState
-        operationState = opBtn.innerText;
-        
         // evaluate the expression if there's and expression on the screen
-        if (operationClicked) screen.innerText = evalExpression(screen.innerText) + opBtn.innerText;
-        else                  operationClicked = true;
+        if (operationClicked) {
+            screen.innerText = evalExpression(screen.innerText) + opBtn.innerText;
+
+            // update operationState
+            operationState = opBtn.innerText;
+            console.log(`Btn clicked: Op state = ${operationState}, innerText = ${opBtn.innerText}`)
+            prevNum = Number(evalExpression(screen.innerText));
+            console.log(`state = ${operationState}, prevNum = ${prevNum}`);
+        }
+        else {
+            operationClicked = true;
+            screen.innerText += opBtn.innerText;
+        }
     });
 })
