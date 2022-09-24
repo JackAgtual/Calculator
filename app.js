@@ -28,6 +28,13 @@ screenBtns.forEach(btn => {
             screen.innerText = btn.textContent;
             started = true;
         }
+
+        // clear screen if new number is clicked after operation
+        // operationClicked is true 
+        if (operationClicked && operationState) {
+            screen.innerText = btn.innerText;
+            operationClicked = false;
+        }
 })
 });
 
@@ -116,10 +123,20 @@ const evalExpression = (evalStr, operationState) => {
 const equalBtn = document.querySelector('#equals');
 equalBtn.addEventListener('click', () => {
     const evalStr = screen.innerText;
+
+    
+
+    if (operationState) {
+        screen.innerText = operate(operationState, prevNum, Number(evalStr));
+        operationState = null;
+        operationClicked = false;
+        return;
+    }
+
     if (!isValidEval(evalStr)) return;
 
     screen.innerText = (Math.round(evalExpression(evalStr) * 100) / 100).toString()
-
+    operationState = null;
     operationClicked = false;
 });
 
@@ -130,15 +147,24 @@ opBtns.forEach(opBtn => {
 
         // evaluate the expression if there's and expression on the screen
         if (operationClicked) {
-            screen.innerText = evalExpression(screen.innerText) + opBtn.innerText;
+            let ans = evalExpression(screen.innerText, operationState)
+            
+            screen.innerText = ans;
 
             // update operationState
             operationState = opBtn.innerText;
-            prevNum = Number(evalExpression(screen.innerText));
+            prevNum = Number(ans);
         }
         else {
             operationClicked = true;
             screen.innerText += opBtn.innerText;
         }
     });
+})
+
+const allBtns = document.querySelectorAll('button');
+allBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        console.log(`btn: ${btn.innerText}\nprevNum: ${prevNum}\noperationClicked: ${operationClicked}\noperationState: ${operationState}\n`);
+    })
 })
