@@ -2,10 +2,12 @@ const add      = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide   = (a, b) => a / b;
+const operations = ['+', '-', '*', '/'];
+
+// state variables
 let operationClicked = false;
 let operationState;
 let prevNum;
-const operations = ['+', '-', '*', '/'];
 
 const operate = (operator, a, b) => {
     if      (operator === '+') return add(a, b);
@@ -44,6 +46,8 @@ clearBtn.addEventListener('click', () => {
     started = false;
     screen.innerText = '0';
     operationClicked = false;
+    operationState = null;
+    prevNum = null;
 });
 
 // delete button
