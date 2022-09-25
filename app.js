@@ -8,6 +8,7 @@ const operations = ['+', '-', '*', '/'];
 let operationClicked = false;
 let operationState;
 let prevNum;
+let prevBtn; 
 
 const operate = (operator, a, b) => {
     if      (operator === '+') return add(a, b);
@@ -30,12 +31,14 @@ screenBtns.forEach(btn => {
             screen.innerText = btn.textContent;
             started = true;
         }
+        // issue with screen clearing is here
+        // should be += inner text, not reseting text
+        // (only if its another number)
 
         // clear screen if new number is clicked after operation
-        // operationClicked is true 
-        if (operationClicked && operationState) {
+        if (operationClicked && operationState && operations.includes(prevBtn)) {
             screen.innerText = btn.innerText;
-            operationClicked = false;
+            // operationClicked = false;
         }
 })
 });
@@ -148,6 +151,12 @@ equalBtn.addEventListener('click', () => {
 const opBtns = document.querySelectorAll('.operation');
 opBtns.forEach(opBtn => {
     opBtn.addEventListener('click', () => {
+        
+        // if previous button is operation don't do calculation, just switch operation state
+        if (operations.includes(prevBtn) && started) {
+            operationState = opBtn.innerText;
+            return;
+        }
 
         // evaluate the expression if there's and expression on the screen
         if (operationClicked) {
@@ -169,6 +178,7 @@ opBtns.forEach(opBtn => {
 const allBtns = document.querySelectorAll('button');
 allBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        console.log(`btn: ${btn.innerText}\nprevNum: ${prevNum}\noperationClicked: ${operationClicked}\noperationState: ${operationState}\n`);
+        console.log(`btn: ${btn.innerText}\nstarted: ${started}\nprevNum: ${prevNum}\noperationClicked: ${operationClicked}\noperationState: ${operationState}\nprevBnt: ${prevBtn}`);
+        prevBtn = btn.innerText;
     })
 })
