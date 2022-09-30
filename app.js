@@ -166,3 +166,11 @@ opBtns.forEach(opBtn => {
         prevNum = ans;
     });
 })
+
+const allBtns = document.querySelectorAll('button');
+allBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        console.log(`btn: ${btn.innerText}\nstarted: ${started}\nprevNum: ${prevNum}\noperationState: ${operationState}\nprevBnt: ${prevBtn}`);
+        prevBtn = btn.innerText;
+    })
+})
