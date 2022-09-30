@@ -1,64 +1,37 @@
+// state variables
+let started = false;
+let operationState;
+let prevNum;
+let prevBtn; 
+let prevOpBtn;
+const opBtnDefaultColor = 'rgb(238, 169, 21)';
+const opBtnTargetColor = 'rgb(241, 246, 251)';
+
+const operations = ['+', '-', '*', '/'];
+
+// Helper functions
 const add      = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide   = (a, b) => a / b;
-let operationClicked = false;
-const operations = ['+', '-', '*', '/'];
 
 const operate = (operator, a, b) => {
-    if      (operator === '+') return add(a, b);
-    else if (operator === '-') return subtract(a, b);
-    else if (operator === '*') return multiply(a, b);
-    else if (operator === '/') return divide(a, b);
+    let ans;
+    if      (operator === '+') ans = add(a, b);
+    else if (operator === '-') ans = subtract(a, b);
+    else if (operator === '*') ans = multiply(a, b);
+    else if (operator === '/') ans = divide(a, b);
     else {
         console.error('Invalid operator');
     }
-}
 
-// add clicked buttons to screen
-const screen = document.querySelector('.screen');
-let started = false;
-const screenBtns = document.querySelectorAll('.concat-screen');
-screenBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        if (started) screen.innerText += btn.textContent;
-        else {
-            screen.innerText = btn.textContent;
-            started = true;
-        }
-})
-});
+    return Math.round(ans * 100) / 100;
+};
 
-// clear button
-const clearBtn = document.querySelector('#clear-btn');
-clearBtn.addEventListener('click', () => {
-    started = false;
-    screen.innerText = '0';
-    operationClicked = false;
-});
-
-// delete button
-const deleteBtn = document.querySelector('#delete-btn');
-deleteBtn.addEventListener('click', () => {
-    if (!started) return;
-
-    // check if deleting an operation
-    if (operations.includes(screen.innerText.charAt(screen.innerText.length - 1))) operationClicked = false;
-
-    let newStr;
-    if (screen.innerText.length === 1){ 
-        newStr = '0';
-        started = false;
-    } else newStr = screen.innerText.substring(0, screen.innerText.length - 1);
-
-    screen.innerText = newStr;
-});
-
-// check if evaluation is valid
 const isValidEval = evalStr => {
-    let operations = ['+', '-', '*', '/']
+    // check if evaluation is valid
     let invalidEnds = [...operations, '.'];
-    let okStart = ['+', '-', '.'];// evalStr can start with these chars
+    let okStart = ['+', '-', '.']; // evalStr can start with these chars
 
     // starts or ends with invalid char
     for (let i = 0; i < invalidEnds.length; i++) {
@@ -84,64 +57,121 @@ const isValidEval = evalStr => {
     if (!hasOp) return false;
     
     return true;
-}
+};
 
+const evalExpression = (evalStr, operationState) => {
+    
+    // operation state is defined (not first time clicking operation)
+    if (operationState) return operate(operationState, prevNum, Number(screen.innerText));
 
-// equal btn 
-const evalExpression = evalStr => {
-    const opIdx = [-1];
-
-    // get indecies of operations
+    // get index of operation
+    let opIdx;
     for (let i = 0; i < evalStr.length; i++) {
-        if (operations.includes(evalStr.charAt(i))) opIdx.push(i);
+        if (operations.includes(evalStr.charAt(i))){
+            opIdx = i;
+            break;
+        }
     }
     
     // evaluate expression
-    let curEval;
-    for (let i = 1; i < opIdx.length; i++) {
-        let num1 = curEval || Number(evalStr.substring(opIdx[i-1] + 1, opIdx[i]));
-        let op = evalStr.charAt(opIdx[i]);
-        let num2 = Number(evalStr.substring(opIdx[i] + 1, opIdx[i + 1]));
-        
-        // set curEval
-        switch (op) {
-            case '+':
-                curEval = add(num1, num2);
-                break;
-            case '-':
-                curEval = subtract(num1, num2);
-                break;
-            case '*':
-                curEval = multiply(num1, num2);
-                break;
-            case '/':
-                curEval = divide(num1, num2);
-                break;
-            default:
-                alert('Invalid operation')
-        }
-    }
-
-    return curEval;
+    let op = evalStr.charAt(opIdx);
+    let num1 = Number(evalStr.substring(0, opIdx));
+    let num2 = Number(evalStr.substring(opIdx + 1));
+    
+    return operate(op, num1, num2);
 }
+// End helper functions
 
+// add clicked buttons to screen
+const screen = document.querySelector('.screen');
+const screenBtns = document.querySelectorAll('.concat-screen');
+screenBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (started) screen.innerText += btn.textContent;
+        else {
+            screen.innerText = btn.textContent;
+            started = true;
+        }
+
+        // clear screen if new number is clicked after operation
+        if (operationState && operations.includes(prevBtn)) screen.innerText = btn.innerText;
+    });
+});
+
+// clear button
+const clearBtn = document.querySelector('#clear-btn');
+clearBtn.addEventListener('click', () => {
+    started = false;
+    screen.innerText = '0';
+    operationState = null;
+    prevNum = null;
+    if (prevOpBtn) prevOpBtn.style['background-color'] = opBtnDefaultColor;
+});
+
+// delete button
+const deleteBtn = document.querySelector('#delete-btn');
+deleteBtn.addEventListener('click', () => {
+    if (!started) return;
+
+    let newStr;
+    if (screen.innerText.length === 1){ 
+        newStr = '0';
+        started = false;
+    } else newStr = screen.innerText.substring(0, screen.innerText.length - 1);
+
+    screen.innerText = newStr;
+});
+
+// equal btn 
 const equalBtn = document.querySelector('#equals');
 equalBtn.addEventListener('click', () => {
     const evalStr = screen.innerText;
+
+    // reset operation btns
+    prevOpBtn.style['background-color'] = opBtnDefaultColor;
+
+    if (operationState) {
+        screen.innerText = operate(operationState, prevNum, Number(evalStr));
+        operationState = null;
+        return;
+    }
+
     if (!isValidEval(evalStr)) return;
 
-    screen.innerText = (Math.round(evalExpression(evalStr) * 100) / 100).toString()
-
-    operationClicked = false;
+    screen.innerText = evalExpression(evalStr).toString();
+    operationState = null;
 });
 
 // evaluate expression when operation btn is clicked 
 const opBtns = document.querySelectorAll('.operation');
 opBtns.forEach(opBtn => {
     opBtn.addEventListener('click', () => {
+        
+        // toggle btn styles
+        if (prevOpBtn) prevOpBtn.style['background-color'] = opBtnDefaultColor;
+        opBtn.style['background-color'] = opBtnTargetColor;
+        prevOpBtn = opBtn;
+
+        // if previous button is operation don't do calculation, just switch operation state
+        if (operations.includes(prevBtn) && started) {
+            operationState = opBtn.innerText;
+            return;
+        }
+
         // evaluate the expression if there's and expression on the screen
-        console.log(`op clicked: ${operationClicked}`)
-        if (operationClicked) screen.innerText = evalExpression(screen.innerText) + opBtn.innerText;
-        else                  operationClicked = true;
+        let ans = operationState ? evalExpression(screen.innerText, operationState) : Number(screen.innerText);
+        screen.innerText = ans;
+
+        // update operationState
+        operationState = opBtn.innerText;
+        prevNum = ans;
     });
-})
+});
+
+// Save previous btn
+const allBtns = document.querySelectorAll('button');
+allBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        prevBtn = btn.innerText;
+    });
+});
