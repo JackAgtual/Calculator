@@ -39,7 +39,7 @@ screenBtns.forEach(btn => {
 
         // clear screen if new number is clicked after operation
         if (operationState && operations.includes(prevBtn)) screen.innerText = btn.innerText;
-})
+    });
 });
 
 // clear button
@@ -137,7 +137,7 @@ equalBtn.addEventListener('click', () => {
 
     if (!isValidEval(evalStr)) return;
 
-    screen.innerText = (Math.round(evalExpression(evalStr) * 100) / 100).toString()
+    screen.innerText = evalExpression(evalStr).toString();
     operationState = null;
 });
 
