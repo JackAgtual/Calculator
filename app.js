@@ -11,13 +11,16 @@ let prevNum;
 let prevBtn; 
 
 const operate = (operator, a, b) => {
-    if      (operator === '+') return add(a, b);
-    else if (operator === '-') return subtract(a, b);
-    else if (operator === '*') return multiply(a, b);
-    else if (operator === '/') return divide(a, b);
+    let ans;
+    if      (operator === '+') ans = add(a, b);
+    else if (operator === '-') ans = subtract(a, b);
+    else if (operator === '*') ans = multiply(a, b);
+    else if (operator === '/') ans = divide(a, b);
     else {
         console.error('Invalid operator');
     }
+
+    return Math.round(ans * 100) / 100;
 }
 
 // add clicked buttons to screen
@@ -109,7 +112,7 @@ const evalExpression = (evalStr, operationState) => {
     
     // evaluate expression
     let op = evalStr.charAt(opIdx);
-    let num1  =Number(evalStr.substring(0, opIdx));
+    let num1 = Number(evalStr.substring(0, opIdx));
     let num2 = Number(evalStr.substring(opIdx + 1));
     
     return operate(op, num1, num2);
@@ -118,8 +121,6 @@ const evalExpression = (evalStr, operationState) => {
 const equalBtn = document.querySelector('#equals');
 equalBtn.addEventListener('click', () => {
     const evalStr = screen.innerText;
-
-    
 
     if (operationState) {
         screen.innerText = operate(operationState, prevNum, Number(evalStr));
@@ -150,8 +151,7 @@ opBtns.forEach(opBtn => {
 
         // update operationState
         operationState = opBtn.innerText;
-        prevNum = Number(ans);
-        
+        prevNum = ans;
     });
 })
 
