@@ -49,10 +49,7 @@ clearBtn.addEventListener('click', () => {
     screen.innerText = '0';
     operationState = null;
     prevNum = null;
-
-    //TODO: Reset opBtn colors and state
-    // or after first click, just reset the op state (or do this with the backspace btn)
-    // after second click reset everything?
+    if (prevOpBtn) prevOpBtn.style['background-color'] = opBtnDefaultColor;
 });
 
 // delete button
@@ -153,7 +150,6 @@ opBtns.forEach(opBtn => {
         if (prevOpBtn) prevOpBtn.style['background-color'] = opBtnDefaultColor;
         opBtn.style['background-color'] = 'white';
         prevOpBtn = opBtn;
-        console.log('changing colors')
 
         // if previous button is operation don't do calculation, just switch operation state
         if (operations.includes(prevBtn) && started) {
