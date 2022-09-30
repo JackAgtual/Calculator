@@ -121,7 +121,7 @@ const evalExpression = (evalStr, operationState) => {
     
     // evaluate expression
     let op = evalStr.charAt(opIdx);
-    let num1 =Number(evalStr.substring(0, opIdx));
+    let num1  =Number(evalStr.substring(0, opIdx));
     let num2 = Number(evalStr.substring(opIdx + 1));
     
     return operate(op, num1, num2);
