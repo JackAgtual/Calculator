@@ -5,7 +5,8 @@ const divide   = (a, b) => a / b;
 const operations = ['+', '-', '*', '/'];
 
 // state variables
-let operationClicked = false;
+let operationClicked = true; //false;
+let started = false;
 let operationState;
 let prevNum;
 let prevBtn; 
@@ -22,7 +23,6 @@ const operate = (operator, a, b) => {
 
 // add clicked buttons to screen
 const screen = document.querySelector('.screen');
-let started = false;
 const screenBtns = document.querySelectorAll('.concat-screen');
 screenBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -136,7 +136,7 @@ equalBtn.addEventListener('click', () => {
     if (operationState) {
         screen.innerText = operate(operationState, prevNum, Number(evalStr));
         operationState = null;
-        operationClicked = false;
+        // operationClicked = false;
         return;
     }
 
@@ -144,7 +144,7 @@ equalBtn.addEventListener('click', () => {
 
     screen.innerText = (Math.round(evalExpression(evalStr) * 100) / 100).toString()
     operationState = null;
-    operationClicked = false;
+    // operationClicked = false;
 });
 
 // evaluate expression when operation btn is clicked 
@@ -160,7 +160,7 @@ opBtns.forEach(opBtn => {
 
         // evaluate the expression if there's and expression on the screen
         if (operationClicked) {
-            let ans = evalExpression(screen.innerText, operationState)
+            let ans = operationState ? evalExpression(screen.innerText, operationState) : Number(screen.innerText);
             
             screen.innerText = ans;
 
@@ -169,8 +169,11 @@ opBtns.forEach(opBtn => {
             prevNum = Number(ans);
         }
         else {
+            // probably don't need this else block or operationClicked
             operationClicked = true;
-            screen.innerText += opBtn.innerText;
+            prevNum = Number(screen.innerText);
+            operationState = opBtn.innerText;
+            // screen.innerText += opBtn.innerText;
         }
     });
 })
