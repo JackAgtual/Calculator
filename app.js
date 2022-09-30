@@ -68,9 +68,8 @@ deleteBtn.addEventListener('click', () => {
 
 // check if evaluation is valid
 const isValidEval = evalStr => {
-    let operations = ['+', '-', '*', '/']
     let invalidEnds = [...operations, '.'];
-    let okStart = ['+', '-', '.'];// evalStr can start with these chars
+    let okStart = ['+', '-', '.']; // evalStr can start with these chars
 
     // starts or ends with invalid char
     for (let i = 0; i < invalidEnds.length; i++) {
