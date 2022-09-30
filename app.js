@@ -9,6 +9,9 @@ let started = false;
 let operationState;
 let prevNum;
 let prevBtn; 
+let prevOpBtn;
+const opBtnDefaultColor = 'rgb(238, 169, 21)';
+const opBtnTargetColor = 'rgb(241, 246, 251)';
 
 const operate = (operator, a, b) => {
     let ans;
@@ -46,6 +49,10 @@ clearBtn.addEventListener('click', () => {
     screen.innerText = '0';
     operationState = null;
     prevNum = null;
+
+    //TODO: Reset opBtn colors and state
+    // or after first click, just reset the op state (or do this with the backspace btn)
+    // after second click reset everything?
 });
 
 // delete button
@@ -122,6 +129,9 @@ const equalBtn = document.querySelector('#equals');
 equalBtn.addEventListener('click', () => {
     const evalStr = screen.innerText;
 
+    // reset operation btns
+    prevOpBtn.style['background-color'] = opBtnDefaultColor;
+
     if (operationState) {
         screen.innerText = operate(operationState, prevNum, Number(evalStr));
         operationState = null;
@@ -139,6 +149,12 @@ const opBtns = document.querySelectorAll('.operation');
 opBtns.forEach(opBtn => {
     opBtn.addEventListener('click', () => {
         
+        // toggle btn styles
+        if (prevOpBtn) prevOpBtn.style['background-color'] = opBtnDefaultColor;
+        opBtn.style['background-color'] = 'white';
+        prevOpBtn = opBtn;
+        console.log('changing colors')
+
         // if previous button is operation don't do calculation, just switch operation state
         if (operations.includes(prevBtn) && started) {
             operationState = opBtn.innerText;
