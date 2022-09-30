@@ -148,7 +148,7 @@ opBtns.forEach(opBtn => {
         
         // toggle btn styles
         if (prevOpBtn) prevOpBtn.style['background-color'] = opBtnDefaultColor;
-        opBtn.style['background-color'] = 'white';
+        opBtn.style['background-color'] = opBtnTargetColor;
         prevOpBtn = opBtn;
 
         // if previous button is operation don't do calculation, just switch operation state
