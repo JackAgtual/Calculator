@@ -132,6 +132,12 @@ const deleteBtn = document.querySelector('#delete-btn');
 deleteBtn.addEventListener('click', () => {
     if (!started) return;
 
+    // check if last btn was an operation
+    if ([...operations, '='].includes(prevBtn)) {
+        console.log('skip')
+        return;
+    }
+    
     let newStr;
     if (screen.innerText.length === 1){ 
         newStr = '0';
@@ -198,6 +204,7 @@ pcntBtn.addEventListener('click', () => {
 const allBtns = document.querySelectorAll('button');
 allBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+        console.log(`PrevBtn = ${prevBtn}`);
         prevBtn = btn.innerText;
     });
 });
