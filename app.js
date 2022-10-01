@@ -87,6 +87,11 @@ const screen = document.querySelector('.screen');
 const screenBtns = document.querySelectorAll('.concat-screen');
 screenBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+
+        // if btn is decimal, make sure ther's not already a decimal
+        // it's ok to add decimal if previous btn was an operation or equal
+        if (btn.innerText === '.' && screen.innerText.indexOf('.') !== -1) return;
+
         if (started) screen.innerText += btn.textContent;
         else {
             screen.innerText = btn.textContent;
@@ -173,7 +178,7 @@ const pcntBtn = document.querySelector('#percent');
 pcntBtn.addEventListener('click', () => {
     const num = Number(screen.innerText) / 100;
     screen.innerText = `${Math.round(num * 100) / 100}`;
-})
+});
 
 // Save previous btn
 const allBtns = document.querySelectorAll('button');
