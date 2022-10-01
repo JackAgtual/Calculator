@@ -80,8 +80,6 @@ const evalExpression = (evalStr, operationState) => {
     
     return operate(op, num1, num2);
 }
-
-const btnIsOperationOrEquals = prevBtnStr => [...operations, '='].includes(prevBtnStr);
 // End helper functions
 
 // add clicked buttons to screen
@@ -101,7 +99,7 @@ screenBtns.forEach(btn => {
         // you can add decimal if previous btn was an operation or equal
         if (btn.innerText === '.' && 
             screen.innerText.indexOf('.') !== -1 && 
-            !btnIsOperationOrEquals(prevBtn)) return;
+            ![...operations, '='].includes(prevBtn)) return;
 
         if (started) screen.innerText += btn.textContent;
         else {
@@ -111,8 +109,8 @@ screenBtns.forEach(btn => {
 
         // clear screen if new number is clicked after operation
         if (operationState && operations.includes(prevBtn)) {
-            // only if prev btn was operation. Should reset screen in prev btn was equals
-            if (btnIsOperationOrEquals(prevBtn) && btn.innerText === '.') screen.innerText = '0.';
+            // only if prev btn was operation
+            if (operations.includes(prevBtn) && btn.innerText === '.') screen.innerText = '0.';
             else screen.innerText = btn.innerText;
         }
     });
