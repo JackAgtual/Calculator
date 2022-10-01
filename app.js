@@ -171,9 +171,10 @@ opBtns.forEach(opBtn => {
 // percentage button
 const pcntBtn = document.querySelector('#percent');
 pcntBtn.addEventListener('click', () => {
-    const num = Number(screen.innerText);
-    screen.innerText = `${num / 100}`;
+    const num = Number(screen.innerText) / 100;
+    screen.innerText = `${Math.round(num * 100) / 100}`;
 })
+
 // Save previous btn
 const allBtns = document.querySelectorAll('button');
 allBtns.forEach(btn => {
