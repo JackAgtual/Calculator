@@ -81,7 +81,7 @@ const evalExpression = (evalStr, operationState) => {
     return operate(op, num1, num2);
 }
 
-const prevBtnWasOperationOrEquals = prevBtnStr => [...operations, '='].includes(prevBtnStr);
+const btnIsOperationOrEquals = prevBtnStr => [...operations, '='].includes(prevBtnStr);
 // End helper functions
 
 // add clicked buttons to screen
@@ -90,11 +90,18 @@ const screenBtns = document.querySelectorAll('.concat-screen');
 screenBtns.forEach(btn => {
     btn.addEventListener('click', () => {
 
+        // reset if previous btn is =
+        if (prevBtn === '=') {
+            if (btn.innerText === '.') screen.innerText = '0.';
+            else screen.innerText = btn.innerText;
+            return;
+        }
+
         // if btn is decimal, make sure ther's not already a decimal
         // you can add decimal if previous btn was an operation or equal
         if (btn.innerText === '.' && 
             screen.innerText.indexOf('.') !== -1 && 
-            !prevBtnWasOperationOrEquals(prevBtn)) return;
+            !btnIsOperationOrEquals(prevBtn)) return;
 
         if (started) screen.innerText += btn.textContent;
         else {
@@ -103,7 +110,11 @@ screenBtns.forEach(btn => {
         }
 
         // clear screen if new number is clicked after operation
-        if (operationState && operations.includes(prevBtn)) screen.innerText = btn.innerText;
+        if (operationState && operations.includes(prevBtn)) {
+            // only if prev btn was operation. Should reset screen in prev btn was equals
+            if (btnIsOperationOrEquals(prevBtn) && btn.innerText === '.') screen.innerText = '0.';
+            else screen.innerText = btn.innerText;
+        }
     });
 });
 
