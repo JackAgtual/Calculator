@@ -87,14 +87,33 @@ const screen = document.querySelector('.screen');
 const screenBtns = document.querySelectorAll('.concat-screen');
 screenBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+
+        // reset if previous btn is =
+        if (prevBtn === '=') {
+            if (btn.innerText === '.') screen.innerText = '0.';
+            else screen.innerText = btn.innerText;
+            return;
+        }
+
+        // if btn is decimal, make sure ther's not already a decimal
+        // you can add decimal if previous btn was an operation or equal
+        if (btn.innerText === '.' && 
+            screen.innerText.indexOf('.') !== -1 && 
+            ![...operations, '='].includes(prevBtn)) return;
+
         if (started) screen.innerText += btn.textContent;
         else {
-            screen.innerText = btn.textContent;
+            if (btn.innerText === '.') screen.innerText = '0.';
+            else screen.innerText = btn.textContent;
             started = true;
         }
 
         // clear screen if new number is clicked after operation
-        if (operationState && operations.includes(prevBtn)) screen.innerText = btn.innerText;
+        if (operationState && operations.includes(prevBtn)) {
+            // only if prev btn was operation
+            if (operations.includes(prevBtn) && btn.innerText === '.') screen.innerText = '0.';
+            else screen.innerText = btn.innerText;
+        }
     });
 });
 
@@ -173,7 +192,7 @@ const pcntBtn = document.querySelector('#percent');
 pcntBtn.addEventListener('click', () => {
     const num = Number(screen.innerText) / 100;
     screen.innerText = `${Math.round(num * 100) / 100}`;
-})
+});
 
 // Save previous btn
 const allBtns = document.querySelectorAll('button');
