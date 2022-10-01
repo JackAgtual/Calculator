@@ -89,8 +89,10 @@ screenBtns.forEach(btn => {
     btn.addEventListener('click', () => {
 
         // if btn is decimal, make sure ther's not already a decimal
-        // it's ok to add decimal if previous btn was an operation or equal
-        if (btn.innerText === '.' && screen.innerText.indexOf('.') !== -1) return;
+        // you can add decimal if previous btn was an operation or equal
+        if (btn.innerText === '.' && 
+            screen.innerText.indexOf('.') !== -1 && 
+            ![...operations, '='].includes(prevBtn.innerText)) return;
 
         if (started) screen.innerText += btn.textContent;
         else {
