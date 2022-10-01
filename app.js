@@ -103,7 +103,8 @@ screenBtns.forEach(btn => {
 
         if (started) screen.innerText += btn.textContent;
         else {
-            screen.innerText = btn.textContent;
+            if (btn.innerText === '.') screen.innerText += '.';
+            else screen.innerText = btn.textContent;
             started = true;
         }
 
